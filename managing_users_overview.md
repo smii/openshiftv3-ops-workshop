@@ -4,6 +4,13 @@ In this lab you will learn how OpenShift manages users and how authentication is
 
 ## Step 1
 
+SSH to the master node via the Bastion (jump)host
+```
+ssh 35.176.100.251 -lec2-user -iid_rsa 
+ssh master
+```
+
+
 OpenShift takes "hands off" approach in regaurds to users. That is, OpenShift does not manage users directly. Instead it "offloads" the user administration to whatever mechanism you choose.
 
 Currently supported authentication methods are:
@@ -27,7 +34,7 @@ grep -A9 identityProviders /etc/origin/master/master-config.yaml
     name: htpasswd_auth
     provider:
       apiVersion: v1
-      file: /etc/openshift/openshift-passwd
+      file: /etc/origin/master/htpasswd
       kind: HTPasswdPasswordIdentityProvider
   masterCA: ca-bundle.crt
 ```
@@ -45,10 +52,7 @@ demo      72455092-6dad-11e7-b505-5254005e6599                   Local Authentic
 To add a user into OpenShift; just add the user to the backend authentication system. In this case; we use the `htpasswd` command to update the flat file.
 
 ```
-htpasswd /etc/openshift/openshift-passwd user1
-New password: 
-Re-type new password: 
-Adding password for user user1
+htpasswd -b /etc/origin/master/htpasswd user1 password
 
 cat /etc/openshift/openshift-passwd 
 demo:$apr1$tuMj6pjc$uHo8IoNUoK0mGx6omnI1l1
@@ -101,7 +105,7 @@ What happened? OpenShift creates a corresponding user once a successful authenti
 Now we will go through the steps of deleting a user. First step is to remove/lock the user account in the backend authentication method. In this case, it is as easy as removing them from the file.
 
 ```
-sed -i '/^user1/d' /etc/openshift/openshift-passwd 
+sed -i '/^user1/d' /etc/origin/master/htpasswd 
 
 cat /etc/openshift/openshift-passwd
 demo:$apr1$tuMj6pjc$uHo8IoNUoK0mGx6omnI1l1
