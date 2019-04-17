@@ -40,6 +40,12 @@ It breaks down like this:
 
 Restart the `atomic-openshift-master-api atomic-openshift-master-controllers` services
 
+```
+/usr/local/bin/master-restart controllers
+
+/usr/local/bin/master-restart api 
+```
+
 ## Step 2
 
 Login to the webui as `user-1`...you should have about 3 projects (if you have not deleted any...it is okay if you did). 
