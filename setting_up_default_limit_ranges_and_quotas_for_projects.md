@@ -125,23 +125,18 @@ projectConfig:
 
 Restart the `atomic-openshift-master` service
 
-```
-systemctl restart atomic-openshift-master-api atomic-openshift-master-controllers
-```
-
-Verify that it is running
 
 ```
-# systemctl status atomic-openshift-master-api
-● atomic-openshift-master-api.service - Atomic OpenShift Master API
-   Loaded: loaded (/usr/lib/systemd/system/atomic-openshift-master-api.service; enabled; vendor preset: disabled)
-   Active: active (running) since Mon 2018-02-05 17:19:43 UTC; 7min ago
-     Docs: https://github.com/openshift/origin
- Main PID: 25995 (openshift)
-   Memory: 390.1M
-   CGroup: /system.slice/atomic-openshift-master-api.service
-           └─25995 /usr/bin/openshift start master api --config=/etc/origin/master/master-config.yaml --loglevel=2 --listen=https://0.0.0.0:8443 --master=https://10.0.0.4:84...
+/usr/local/bin/master-restart controllers
 
+/usr/local/bin/master-restart api 
+```
+
+
+Check the logs 
+```
+/usr/local/bin/master-logs controllers controllers
+````
 Feb 05 17:27:20 u01-master atomic-openshift-master-api[25995]: I0205 17:27:20.025440   25995 rest.go:362] Starting watch for /api/v1/pods, rv=78947 labels= fields=s...out=5m59s
 Feb 05 17:27:20 u01-master atomic-openshift-master-api[25995]: I0205 17:27:20.575015   25995 rest.go:362] Starting watch for /apis/template.openshift.io/v1/template...out=6m54s
 Feb 05 17:27:20 u01-master atomic-openshift-master-api[25995]: E0205 17:27:20.620723   25995 watcher.go:210] watch chan error: etcdserver: mvcc: required revision h...compacted
